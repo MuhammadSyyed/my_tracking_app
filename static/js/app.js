@@ -71,9 +71,9 @@ function logout(session_id) {
     });
 }
 
-function gotoDashboard(session_id) {
+function gotoMap(session_id) {
     document.cookie = `session_id=${session_id}`;
-    window.location.href = '/dashboard';
+    window.location.href = '/map';
 }
 
 function goBack() {

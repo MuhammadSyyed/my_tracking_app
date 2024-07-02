@@ -13,10 +13,11 @@ def add_new_user(username, password):
         conn = connect_db(const.database_file)
         cursor = conn.cursor()
         cursor.execute(
-            "INSERT INTO users (username, password, session_id, session_expiration) VALUES (?,?,?,?)",
+            "INSERT INTO users (username, password,current_location, session_id, session_expiration) VALUES (?,?,?,?,?)",
             (
                 username,
                 password,
+                'Main Gate',
                 None,
                 None,
             ),
@@ -58,6 +59,7 @@ def get_one_user(username, password):
             "user_id": user["user_id"],
             "username": user["username"],
             "password": user["password"],
+            "current_location": user["current_location"],
             "session_id": session_id,
             "session_expiration": session_expiration,
         }
@@ -77,6 +79,7 @@ def get_user_by_session_id(session_id: str):
             "user_id": user["user_id"],
             "username": user["username"],
             "password": user["password"],
+            "current_location": user["current_location"],
             "session_id": user["session_id"],
             "session_expiration": datetime.strptime(
                 user["session_expiration"], "%Y-%m-%d %H:%M:%S.%f"

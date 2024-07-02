@@ -12,6 +12,7 @@ def init_db():
             user_id INTEGER PRIMARY KEY AUTOINCREMENT,
             username TEXT UNIQUE NOT NULL,
             password TEXT NOT NULL,
+            current_location TEXT NOT NULL,
             session_id TEXT,
             session_expiration DATE 
         )

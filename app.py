@@ -15,10 +15,11 @@ def is_valid_session(session_id):
 
     if user:
         username = user["username"]
+        current_location = user["current_location"]
         expiration_time = user["session_expiration"]
         if datetime.now() < expiration_time:
-            return True, username
-    return False, False
+            return True, username,current_location
+    return False, False,False
 
 
 @app.route("/", methods=["GET"])
@@ -38,10 +39,11 @@ def login():
     user = get_one_user(username, password)
     if user:
         return render_template(
-            "dashboard.html",
+            "map.html",
             session_id=user["session_id"],
             username=username,
-            page_name="dashboard",
+            current_location=user["current_location"],
+            page_name="Map",
         )
     else:
         return render_template("login.html", message="Unauthorized Access Denied!")
@@ -60,16 +62,17 @@ def signup():
         return render_template("signup.html", message=response["message"])
 
 
-@app.route("/dashboard", methods=["GET"])
-def dashboard():
+@app.route("/map", methods=["GET"])
+def map():
     session_id = request.cookies.get("session_id")
-    valid_id, username = is_valid_session(session_id)
+    valid_id, username,current_loc = is_valid_session(session_id)
     if valid_id:
         return render_template(
-            "dashboard.html",
+            "map.html",
             session_id=session_id,
             username=username,
-            page_name="dashboard",
+            page_name="Map",
+            current_location=current_loc
         )
     else:
         return render_template("login.html", message="Unauthorized Access Denied!")
@@ -78,7 +81,7 @@ def dashboard():
 @app.route("/logout", methods=["POST"])
 def logout():
     session_id = request.headers["Session-Id"]
-    valid_id, _ = is_valid_session(session_id)
+    valid_id, _ ,_= is_valid_session(session_id)
     if valid_id:
         delete_session(session_id)
         return jsonify({"message": "User logged Out Successfully!"})
