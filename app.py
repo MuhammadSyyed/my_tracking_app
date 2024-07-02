@@ -1,5 +1,7 @@
 from flask import Flask, render_template, request, jsonify, send_from_directory
+from flask_cors import CORS
 import json, uuid
+from script import get_locations, generate_map_string
 from datetime import datetime, timedelta
 from db_functions import *
 from constant import *
@@ -8,6 +10,7 @@ import traceback
 app = Flask(__name__)
 app.jinja_env.auto_reload = True
 app.config["TEMPLATES_AUTO_RELOAD"] = True
+CORS(app)
 
 
 def is_valid_session(session_id):
@@ -38,12 +41,14 @@ def login():
     password = request.form.get("password")
     user = get_one_user(username, password)
     if user:
+        _, locations = get_locations("csv_data/*.csv")
         return render_template(
             "map.html",
             session_id=user["session_id"],
             username=username,
             current_location=user["current_location"],
             page_name="Map",
+            locations=locations["desc"].values.tolist()
         )
     else:
         return render_template("login.html", message="Unauthorized Access Denied!")
@@ -67,16 +72,23 @@ def map():
     session_id = request.cookies.get("session_id")
     valid_id, username,current_loc = is_valid_session(session_id)
     if valid_id:
+        _, locations = get_locations("csv_data/*.csv")
         return render_template(
             "map.html",
             session_id=session_id,
             username=username,
             page_name="Map",
-            current_location=current_loc
+            current_location=current_loc,
+            locations=locations["desc"].values.tolist()
         )
     else:
         return render_template("login.html", message="Unauthorized Access Denied!")
 
+@app.post("/get_map")
+def get_map():
+    data = request.get_json()
+    mymap = generate_map_string(data["current"],data["destination"])
+    return jsonify({"map":mymap})
 
 @app.route("/logout", methods=["POST"])
 def logout():
