@@ -83,6 +83,36 @@ def map():
         )
     else:
         return render_template("login.html", message="Unauthorized Access Denied!")
+    
+@app.route("/location", methods=["GET"])
+def location():
+    session_id = request.cookies.get("session_id")
+    valid_id, username,current_loc = is_valid_session(session_id)
+    if valid_id:
+        return render_template(
+            "locations.html",
+            session_id=session_id,
+            username=username,
+            page_name="Locations",
+            current_location=current_loc
+        )
+    else:
+        return render_template("login.html", message="Unauthorized Access Denied!")
+
+@app.route("/search", methods=["GET"])
+def search():
+    session_id = request.cookies.get("session_id")
+    valid_id, username,current_loc = is_valid_session(session_id)
+    if valid_id:
+        return render_template(
+            "search.html",
+            session_id=session_id,
+            username=username,
+            page_name="Search",
+            current_location=current_loc
+        )
+    else:
+        return render_template("login.html", message="Unauthorized Access Denied!")
 
 @app.post("/get_map")
 def get_map():

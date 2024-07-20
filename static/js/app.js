@@ -76,6 +76,16 @@ function gotoMap(session_id) {
     window.location.href = '/map';
 }
 
+function gotoLocation(session_id) {
+    document.cookie = `session_id=${session_id}`;
+    window.location.href = '/location';
+}
+
+function gotoSearch(session_id) {
+    document.cookie = `session_id=${session_id}`;
+    window.location.href = '/search';
+}
+
 function goBack() {
     window.history.back();
 }
