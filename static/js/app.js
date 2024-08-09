@@ -76,6 +76,11 @@ function gotoMap(session_id) {
     window.location.href = '/map';
 }
 
+function gotoAddLoc(session_id){
+    document.cookie = `session_id=${session_id}`;
+    window.location.href = '/addloc';
+}
+
 function gotoLocation(session_id) {
     document.cookie = `session_id=${session_id}`;
     window.location.href = '/location';

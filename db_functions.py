@@ -7,6 +7,7 @@ import constant as const
 def connect_db(db):
     return sqlite3.connect(db)
 
+'''User related functions'''
 
 def add_new_user(username, password):
     try:
@@ -102,9 +103,112 @@ def delete_session(session_id: int):
         print(f"Error deleting session: {str(e)}")
         return {"success": False, "message": "Error deleting session"}
 
+'''Locations related functions '''
+
+def add_new_location(locations_dtls):
+    try:
+        conn = connect_db(const.database_file)
+        cursor = conn.cursor()
+        cursor.execute(
+            "INSERT INTO locations (location_name, latitude,longitude, description, image_path) VALUES (?,?,?,?,?)",
+            (locations_dtls['location_name'],
+             locations_dtls['latitude'],
+             locations_dtls['longitude'],
+             locations_dtls['description'],
+             locations_dtls['image_path']
+             ))
+
+        return {"success": True, "message": "Locations added successfully"}
+    except sqlite3.IntegrityError as e:
+        return {"success": False, "message": "Locations already exists!"}
+    finally:
+        conn.commit()
+        cursor.close()
+        conn.close()
+
+def get_location_by_id(location_id):
+    
+    conn = sqlite3.connect(const.database_file)
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM locations WHERE location_id = ?", (location_id,))
+    location = cursor.fetchone()
+    conn.close()
+
+    if location:
+        return dict(location)
+
+def update_location(locations_dtls):
+    try:
+        conn = connect_db(const.database_file)
+        cursor = conn.cursor()
+        cursor.execute(
+            "UPDATE locations SET location_name = ?, latitude = ?, longitude = ?, description = ?, image_path = ? WHERE location_id = ?",
+            (locations_dtls['location_name'],
+             locations_dtls['latitude'],
+             locations_dtls['longitude'],
+             locations_dtls['description'],
+             locations_dtls['image_path'],
+             locations_dtls['location_id']
+             
+             ))
+
+        if cursor.rowcount == 0:
+            return {"success": False, "message": "Location not found!"}
+
+        return {"success": True, "message": "Location updated successfully"}
+    except sqlite3.IntegrityError as e:
+        return {"success": False, "message": "Error updating location!"}
+    finally:
+        conn.commit()
+        cursor.close()
+        conn.close()
+
+def delete_location(location_id):
+    try:
+        conn = connect_db(const.database_file)
+        cursor = conn.cursor()
+        cursor.execute("DELETE FROM locations WHERE location_id = ?", (location_id,))
+
+        if cursor.rowcount == 0:
+            return {"success": False, "message": "Location not found!"}
+
+        return {"success": True, "message": "Location deleted successfully"}
+    except sqlite3.Error as e:
+        return {"success": False, "message": "Error deleting location!"}
+    finally:
+        conn.commit()
+        cursor.close()
+        conn.close()
+    
+def get_all_locations():
+    
+    conn = sqlite3.connect(const.database_file)
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM locations")
+    locations = cursor.fetchall()
+    conn.close()
+
+    if locations:
+        return [dict(loc) for loc in locations]
 
 if __name__ == "__main__":
 
-    add_new_user("Imran", "1234")
+    # add_new_user("Imran", "1234")
     # user = get_one_user("Imran","1234")
     # print(user)
+    add_new_location({
+        "location_name": "Main gate",
+        "latitude":24,
+        "longitude":67,
+        "description":"Main University gate",
+        "image_path":"",
+    })
+    # loc = get_location_by_id(1)
+    # print(loc)
+    # print(get_all_locations())
+
+    # update_location({'location_id': 2, 'location_name': 'Parking', 'latitude': 24.0, 'longitude': 67.0, 'description': 'Parking', 'image_path': ''})
+    # delete_location(2)
+    # print(get_all_locations())

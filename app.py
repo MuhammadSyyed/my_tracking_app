@@ -30,6 +30,22 @@ def index():
     return render_template("login.html", message="Please login to start session!")
 
 
+@app.route("/addloc", methods=["GET"])
+def addloc():
+    session_id = request.cookies.get("session_id")
+    valid_id, username,current_loc = is_valid_session(session_id)
+    if valid_id:
+        return render_template(
+            "addloc.html",
+            session_id=session_id,
+            username=username,
+            page_name="Add New Location",
+            current_location=current_loc
+        )
+    else:
+        return render_template("login.html", message="Unauthorized Access Denied!")
+
+    
 @app.route("/register", methods=["GET"])
 def register():
     return render_template("signup.html", message="Please add account!")
@@ -66,6 +82,44 @@ def signup():
     else:
         return render_template("signup.html", message=response["message"])
 
+@app.route("/register_loc", methods=["POST"])
+def register_loc():
+    session_id = request.cookies.get("session_id")
+    valid_id, username,current_loc = is_valid_session(session_id)
+    if valid_id:
+        location_name = request.form.get("location_name")
+        latitude = request.form.get("latitude")
+        longitude = request.form.get("longitude")
+        description = request.form.get("description")
+        image_path = request.form.get("image_path")
+        response = add_new_location({"location_name": location_name,
+        "latitude":float(latitude),
+        "longitude":float(longitude),
+        "description":description,
+        "image_path":image_path})
+        if response["success"]:
+       
+            return render_template(
+            "locations.html",
+            session_id=session_id,
+            username=username,
+            page_name="Locations",
+            current_location=current_loc,
+            locations = get_all_locations()
+        )
+        else:
+            return render_template(
+            "addloc.html",
+            session_id=session_id,
+            username=username,
+            page_name="Add New Location",
+            current_location=current_loc
+        )
+
+    else:
+         return render_template("login.html", message="Unauthorized Access Denied!")
+
+
 
 @app.route("/map", methods=["GET"])
 def map():
@@ -94,7 +148,8 @@ def location():
             session_id=session_id,
             username=username,
             page_name="Locations",
-            current_location=current_loc
+            current_location=current_loc,
+            locations = get_all_locations()
         )
     else:
         return render_template("login.html", message="Unauthorized Access Denied!")

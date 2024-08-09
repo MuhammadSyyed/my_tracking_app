@@ -19,6 +19,19 @@ def init_db():
     """
     )
 
+    cursor.execute(
+        """
+        CREATE TABLE IF NOT EXISTS locations (
+            location_id INTEGER PRIMARY KEY AUTOINCREMENT,
+            location_name TEXT UNIQUE NOT NULL,
+            latitude REAL NOT NULL,
+            longitude REAL NOT NULL,
+            description TEXT,
+            image_path TEXT 
+        )
+    """
+    )
+
     conn.commit()
     conn.close()
 

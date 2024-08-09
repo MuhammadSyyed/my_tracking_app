@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block username %}
+{{username}} | {{current_location}}
+{% endblock %}
+
+{% block title %}
+{{page_name|title}}
+{% endblock %}
+
+{% block header %}
+{{page_name|upper}}
+{% endblock %}
+
+{% block main %}
+<div id="login-container">
+    <h2>Details</h2>
+    <form action="/register_loc" method="post">
+        <label for="location_name">Enter Location</label>
+        <input type="text" id="location_name" name="location_name" placeholder="Enter Location Name" required>
+        <input type="number" id="latitude" name="latitude" placeholder="Enter Latitude" required>
+        <input type="number" id="longitude" name="longitude" placeholder="Enter Longitude" required>
+        <input type="text" id="description" name="description" placeholder="Enter Description" required>
+        <input type="text" id="image_path" name="image_path" placeholder="Enter image_path" required>
+        <button type="submit">Add</button>
+    </form><br>
+</div><br />
+{% endblock %}
