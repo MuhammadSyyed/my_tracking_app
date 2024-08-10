@@ -15,13 +15,17 @@
 {% block main %}
 <div id="login-container">
     <h2>Details</h2>
-    <form action="/register_loc" method="post">
+    <form action="/register_loc" method="post" enctype="multipart/form-data">
         <label for="location_name">Enter Location</label>
-        <input type="text" id="location_name" name="location_name" placeholder="Enter Location Name" required>
-        <input type="number" id="latitude" name="latitude" placeholder="Enter Latitude" required>
-        <input type="number" id="longitude" name="longitude" placeholder="Enter Longitude" required>
-        <input type="text" id="description" name="description" placeholder="Enter Description" required>
-        <input type="text" id="image_path" name="image_path" placeholder="Enter image_path" required>
+        <input type="text" id="location_name" name="location_name" placeholder="e.g: Talpur House" required>
+        <label for="location_name">Enter Latitude</label>
+        <input type="number" id="latitude" name="latitude" placeholder="e.g: 38.895" required>
+        <label for="location_name">Enter Longitude</label>
+        <input type="number" id="longitude" name="longitude" placeholder="e.g: -77.036" required>
+        <label for="location_name">Enter Description</label>
+        <input type="text" id="description" name="description" placeholder="BBA Department" required>
+        <label for="location_name">Insert An Image</label>
+        <input type="file" id="image_path" name="image_path" accept="image/*">
         <button type="submit">Add</button>
     </form><br>
 </div><br />

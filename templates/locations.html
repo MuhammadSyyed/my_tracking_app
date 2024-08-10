@@ -15,16 +15,17 @@
 {% block main%}
 
 <button onclick="gotoAddLoc('{{session_id}}')">Add + </button>
-
 {% for loc in locations %}
-<div class="card" style="width:100%;height: 100px;">
-    <img src="{{loc.image_path}}" alt="Image">
-    <div class="container">
+<div class="card" style="width:100%;height: max-content;">
+    
+    <div  class="container">
         <h4><b>{{loc.location_name}}</b></h4>
         <p>description:{{loc.description}}</p></br></br>
         <p> latitude:{{loc.latitude}}</p></br></br>
         <p> longitude:{{loc.longitude}}</p></br></br>
+        <img style="height: 100px; width: 100px;" src='{{loc.image_path}}'>
     </div>
 </div>
+
 {% endfor %}
 {% endblock %}

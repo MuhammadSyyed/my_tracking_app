@@ -192,6 +192,8 @@ def get_all_locations():
 
     if locations:
         return [dict(loc) for loc in locations]
+    else:
+        return []
 
 if __name__ == "__main__":
 

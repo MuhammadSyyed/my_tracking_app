@@ -6,9 +6,13 @@ from datetime import datetime, timedelta
 from db_functions import *
 from constant import *
 import traceback
+import os
 
 app = Flask(__name__)
 app.jinja_env.auto_reload = True
+UPLOAD_FOLDER = 'static/uploads'
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 CORS(app)
 
@@ -91,12 +95,18 @@ def register_loc():
         latitude = request.form.get("latitude")
         longitude = request.form.get("longitude")
         description = request.form.get("description")
-        image_path = request.form.get("image_path")
+        file = request.files.get('image_path')
+        # if 'file' in request.files:
+        #     file = request.files['file']
+        file_path=os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
+        file.save(file_path)
+        # else:
+        #     file_path = ""
         response = add_new_location({"location_name": location_name,
         "latitude":float(latitude),
         "longitude":float(longitude),
         "description":description,
-        "image_path":image_path})
+        "image_path":file_path})
         if response["success"]:
        
             return render_template(
