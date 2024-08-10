@@ -1,113 +1,102 @@
-{% extends 'base.html' %}
-
-{% block username %}
-{{username}} | {{current_location}}
-{% endblock %}
-
-{% block title %}
-{{page_name|title}}
-{% endblock %}
-
-{% block header %}
-{{page_name|upper}}
-{% endblock %}
-
-
-{% block main%}
+{% extends 'base.html' %} {% block username %} {{username}} |
+{{current_location}} {% endblock %} {% block title %} {{page_name|title}} {%
+endblock %} {% block header %} {{page_name|upper}} {% endblock %} {% block
+main%}
 <style>
-    .container {
-        background-color: #fff;
-        padding: 20px;
-        border-radius: 5px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        text-align: center;
-    }
+  .container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
 
-    .dropdown {
-        width: 100%;
-        padding: 10px;
-        margin: 10px 0;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-    }
+  .dropdown {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
 
-    .view {
-        height: fit-content;
-        width: fit-content;
-        margin-top: 20px;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        background-color: #fafafa;
-    }
+  .view {
+    height: fit-content;
+    width: fit-content;
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fafafa;
+  }
 </style>
 <div class="container">
-    <form id="simpleForm">
-        <div class="form-group">
-            <div class="combination">
-                <label for="current">Select Option 1:</label>
-                <select id="current" class="dropdown">
-                    {% for location in locations %}
-                    <option value="{{location}}">{{location}}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <div class="combination">
-                <label for="destination">Select Option 2:</label>
-                <select id="destination" class="dropdown">
-                    {% for location in locations %}
-                    <option value="{{location}}">{{location}}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <div class="form-group">
-                <div class="combination"><button type="button" onclick="showSelections()">Show Selections</button></div>
-            </div>
-
+  <form id="simpleForm">
+    <div class="form-group">
+      <div class="combination">
+        <label for="current">Select Option 1:</label>
+        <select id="current" class="dropdown">
+          {% for location in locations %}
+          <option value="{{location}}">{{location}}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="combination">
+        <label for="destination">Select Option 2:</label>
+        <select id="destination" class="dropdown">
+          {% for location in locations %}
+          <option value="{{location}}">{{location}}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="form-group">
+        <div class="combination">
+          <button type="button" onclick="showSelections('{{session_id}}')">
+            Show Selections
+          </button>
         </div>
-    </form>
-    <iframe id="viewDiv" src="about:blank" width="fit-content" height="fit-content" class="view">Your selections will appear
-        here.</iframe>
+      </div>
+    </div>
+  </form>
+  <!-- <iframe id="viewDiv" src="about:blank" width="fit-content" height="fit-content" class="view">Your selections will appear
+        here.</iframe> -->
 </div>
 
 <script>
-    function showSelections() {
+  function showSelections(session_id) {
+    const fetchMapData = async (source, destination) => {
+      document.cookie = `session_id=${session_id}`;
+      window.location.href = `/get_map/${source}/${destination}`;
+    };
 
-        const fetchMapData = async (current, destination) => {
+    var current = document.getElementById("current").value;
+    var destination = document.getElementById("destination").value;
+    fetchMapData(current, destination);
+  }
+  // const fetchMapData = async (current, destination) => {
+  //   try {
+  //     const response = await fetch("http://127.0.0.1:5000/get_map/", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({ current: current, destination: destination }),
+  //     });
 
-            try {
-                const response = await fetch('http://127.0.0.1:5000/get_map', {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({ "current": current, "destination": destination })
-                });
+  //     if (!response.ok) {
+  //       throw new Error(`HTTP error! status: ${response.status}`);
+  //     }
 
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
+  // const data = await response.json();
+  // console.log(data.map);
 
-                const data = await response.json();
-                console.log(data.map);
+  // var iframe = document.getElementById('viewDiv');
+  // var iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
 
-                var iframe = document.getElementById('viewDiv');
-                var iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-
-
-                iframeDoc.body.innerHTML = data.map;
-
-            } catch (error) {
-                console.error("Error fetching map data:", error);
-            }
-        };
-
-        var current = document.getElementById('current').value;
-        var destination = document.getElementById('destination').value;
-        fetchMapData(current, destination);
-    }
-
+  // iframeDoc.body.innerHTML = data.map;
+  //   } catch (error) {
+  //     console.error("Error fetching map data:", error);
+  //   }
+  // };
 </script>
-
 
 {% endblock %}

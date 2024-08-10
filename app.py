@@ -169,11 +169,10 @@ def search():
     else:
         return render_template("login.html", message="Unauthorized Access Denied!")
 
-@app.post("/get_map")
-def get_map():
-    data = request.get_json()
-    mymap = generate_map_string(data["current"],data["destination"])
-    return jsonify({"map":mymap})
+@app.get("/get_map/<source>/<destination>")
+def get_map(source,destination):
+    filename = generate_map_string(source,destination)
+    return render_template(filename)
 
 @app.route("/logout", methods=["POST"])
 def logout():
