@@ -76,7 +76,7 @@ function gotoMap(session_id) {
     window.location.href = '/map';
 }
 
-function gotoAddLoc(session_id){
+function gotoAddLoc(session_id) {
     document.cookie = `session_id=${session_id}`;
     window.location.href = '/addloc';
 }
@@ -93,4 +93,30 @@ function gotoSearch(session_id) {
 
 function goBack() {
     window.history.back();
+}
+
+async function sendLocation() {
+    const selectElement = document.getElementById('current_loc');
+    const selectedValue = selectElement.value;
+    console.log(selectedValue);
+
+    try {
+        const response = await fetch('/set_loc', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Cookie': `session_id:${'{{session_id}}'}`,
+            },
+            body: JSON.stringify({ location: selectedValue })
+        });
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok.');
+        }
+
+        const data = await response.json();
+        console.log('Success:', data);
+    } catch (error) {
+        console.error('Error:', error);
+    }
 }

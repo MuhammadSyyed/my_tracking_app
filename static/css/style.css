@@ -206,6 +206,7 @@ body {
     flex-direction: column;
     justify-content: space-around;
     padding: 25px;
+    margin-top: 10px;
     background-color: #ffffff;
     box-sizing: border-box;
     border: 1px solid #d2d2d3;
@@ -530,3 +531,4 @@ select {
 img {
     border-radius: 5px 5px 0 0;
 }
+

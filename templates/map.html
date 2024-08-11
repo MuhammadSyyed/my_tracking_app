@@ -1,5 +1,22 @@
-{% extends 'base.html' %} {% block username %} {{username}} |
-{{current_location}} {% endblock %} {% block title %} {{page_name|title}} {%
+{% extends 'base.html' %}
+
+{% block username %}
+<div style="display: flex; align-items: center;">
+  <select id="current_loc" class="dropdown" onchange="sendLocation()" style="font-size: 16px; padding: 4px 8px;">
+    <option value="{{current_location}}" selected>{{current_location}}</option>
+    {% for location in locations %}
+    <option value="{{location}}">{{location}}</option>
+    {% endfor %}
+
+  </select>
+  <p
+    style="margin-left: 10px; background-color: #ffffff;color: black; font-size: 16px; padding: 4px 8px; border-radius: 5px;">
+    {{username}}</p>
+  <span class="material-icons-outlined" style="font-size: 24px; margin-left: 8px;">account_circle</span>
+</div>
+{% endblock %}
+
+{% block title %} {{page_name|title}} {%
 endblock %} {% block header %} {{page_name|upper}} {% endblock %} {% block
 main%}
 <style>
@@ -33,15 +50,16 @@ main%}
   <form id="simpleForm">
     <div class="form-group">
       <div class="combination">
-        <label for="current">Select Option 1:</label>
+        <label for="current">Current Location:</label>
         <select id="current" class="dropdown">
           {% for location in locations %}
           <option value="{{location}}">{{location}}</option>
           {% endfor %}
+          <option value="{{current_location}}" selected>My Location On Map</option>
         </select>
       </div>
       <div class="combination">
-        <label for="destination">Select Option 2:</label>
+        <label for="destination">Destination:</label>
         <select id="destination" class="dropdown">
           {% for location in locations %}
           <option value="{{location}}">{{location}}</option>
@@ -72,31 +90,7 @@ main%}
     var destination = document.getElementById("destination").value;
     fetchMapData(current, destination);
   }
-  // const fetchMapData = async (current, destination) => {
-  //   try {
-  //     const response = await fetch("http://127.0.0.1:5000/get_map/", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({ current: current, destination: destination }),
-  //     });
 
-  //     if (!response.ok) {
-  //       throw new Error(`HTTP error! status: ${response.status}`);
-  //     }
-
-  // const data = await response.json();
-  // console.log(data.map);
-
-  // var iframe = document.getElementById('viewDiv');
-  // var iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-
-  // iframeDoc.body.innerHTML = data.map;
-  //   } catch (error) {
-  //     console.error("Error fetching map data:", error);
-  //   }
-  // };
 </script>
 
 {% endblock %}

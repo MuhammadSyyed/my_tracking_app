@@ -1,13 +1,53 @@
 {% extends 'base.html' %}
 
 {% block username %}
-{{username}} | {{current_location}}
+<div style="display: flex; align-items: center;">
+    <select id="current_loc" class="dropdown" onchange="sendLocation()" style="font-size: 16px; padding: 4px 8px;">
+        <option value="{{current_location}}" selected>{{current_location}}</option>
+        {% for location in locations %}
+        <option value="{{location}}">{{location}}</option>
+        {% endfor %}
+    </select>
+    <p
+        style="margin-left: 10px; background-color: #ffffff;color: black; font-size: 16px; padding: 4px 8px; border-radius: 5px;">
+        {{username}}</p>
+    <span class="material-icons-outlined" style="font-size: 24px; margin-left: 8px;">account_circle</span>
+</div>
 {% endblock %}
-
 {% block title %}
 {{page_name|title}}
 {% endblock %}
 
 {% block header %}
 {{page_name|upper}}
+{% endblock %}
+
+{% block main %}
+<style>
+    .container {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+
+    .dropdown {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    .view {
+        height: fit-content;
+        width: fit-content;
+        margin-top: 20px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #fafafa;
+    }
+</style>
 {% endblock %}

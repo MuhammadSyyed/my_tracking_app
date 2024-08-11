@@ -121,11 +121,7 @@ def generate_map_string(current, destination):
     track = tracking_memory[f"{current}-{destination}"]
     points = [(x, y) for x, y in zip(track.latitude, track.longitude)]
     folium.PolyLine(points, color="yellow", weight=5, opacity=0.85).add_to(smiu_map)
-    filename = f'''{current.replace(" ","_")}-{destination.replace(" ","_")}.html'''
+    filename = f"""{current.replace(" ","_")}-{destination.replace(" ","_")}.html"""
     filepath = f"./templates/{filename}"
     smiu_map.save(filepath)
-    time.sleep(1.5)
-    return filename
-    # with open(filename, 'r') as file:
-    #     html_content = file.read()
-    #     return html_content
+    return filename,filepath
