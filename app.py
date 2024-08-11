@@ -39,12 +39,14 @@ def addloc():
     session_id = request.cookies.get("session_id")
     valid_id, username, current_loc = is_valid_session(session_id)
     if valid_id:
+        _, locations = get_locations("csv_data/*.csv")
         return render_template(
             "addloc.html",
             session_id=session_id,
             username=username,
             page_name="Add New Location",
             current_location=current_loc,
+            locdtls=locations.to_dict(orient="records"),
         )
     else:
         return render_template("login.html", message="Unauthorized Access Denied!")
@@ -97,12 +99,8 @@ def register_loc():
         longitude = request.form.get("longitude")
         description = request.form.get("description")
         file = request.files.get("image_path")
-        # if 'file' in request.files:
-        #     file = request.files['file']
         file_path = os.path.join(app.config["UPLOAD_FOLDER"], file.filename)
         file.save(file_path)
-        # else:
-        #     file_path = ""
         response = add_new_location(
             {
                 "location_name": location_name,
@@ -114,13 +112,15 @@ def register_loc():
         )
         if response["success"]:
 
+            _, locations = get_locations("csv_data/*.csv")
             return render_template(
                 "locations.html",
                 session_id=session_id,
                 username=username,
                 page_name="Locations",
                 current_location=current_loc,
-                locations=get_all_locations(),
+                alllocs=get_all_locations(),
+                locations=locations["desc"].values.tolist(),
             )
         else:
             return render_template(
@@ -184,6 +184,7 @@ def search():
             username=username,
             page_name="Search",
             locations=locations["desc"].values.tolist(),
+            users=get_all_users(),
             current_location=current_loc,
         )
     else:

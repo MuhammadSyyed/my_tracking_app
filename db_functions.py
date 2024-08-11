@@ -224,6 +224,20 @@ def update_user_location_by_session_id(session_id, location):
         conn.close()
 
 
+def get_all_users():
+    conn = sqlite3.connect(const.database_file)
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM users")
+    users = cursor.fetchall()
+    conn.close()
+
+    if users:
+        return [dict(usr) for usr in users]
+    else:
+        return []
+
+
 if __name__ == "__main__":
 
     # add_new_user("Imran", "1234")

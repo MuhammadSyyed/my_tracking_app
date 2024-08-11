@@ -51,3 +51,24 @@
     }
 </style>
 {% endblock %}
+
+{% block main_cards %}
+{% for user in users %}
+{% if user.session_id == session_id %}
+{% else %}
+<div class="card">
+    <p><b>{{user.username}}</b></p>
+    <p>{{user.current_location}}</p>
+    <button onclick="goto_location('{{current_location}}','{{user.current_location}}')"> View
+        location on Map </button>
+</div>
+{% endif %}
+
+<script>
+    function goto_location(source, destination) {
+        window.location.href = `/get_map/${source}/${destination}`;
+    }
+</script>
+
+{% endfor %}
+{% endblock %}

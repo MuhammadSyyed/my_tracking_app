@@ -124,4 +124,4 @@ def generate_map_string(current, destination):
     filename = f"""{current.replace(" ","_")}-{destination.replace(" ","_")}.html"""
     filepath = f"./templates/{filename}"
     smiu_map.save(filepath)
-    return filename,filepath
+    return filename, filepath

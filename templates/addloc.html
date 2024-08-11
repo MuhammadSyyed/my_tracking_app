@@ -1,7 +1,19 @@
 {% extends 'base.html' %}
 
 {% block username %}
-{{username}} | {{current_location}}
+<div style="display: flex; align-items: center;">
+    <select id="current_loc" class="dropdown" onchange="sendLocation()"
+        style="font-size: 16px; padding: 4px 8px; margin-top: 15px;">
+        <option value="{{current_location}}" selected>{{current_location}}</option>
+        {% for location in locations %}
+        <option value="{{location}}">{{location}}</option>
+        {% endfor %}
+    </select>
+    <p
+        style="margin-left: 10px; background-color: #ffffff;color: black; font-size: 16px; padding: 4px 8px; border-radius: 5px;">
+        {{username}}</p>
+    <span class="material-icons-outlined" style="font-size: 24px; margin-left: 8px;">account_circle</span>
+</div>
 {% endblock %}
 
 {% block title %}
@@ -17,16 +29,34 @@
     <h2>Details</h2>
     <form action="/register_loc" method="post" enctype="multipart/form-data">
         <label for="location_name">Enter Location</label>
-        <input type="text" id="location_name" name="location_name" placeholder="e.g: Talpur House" required>
-        <label for="location_name">Enter Latitude</label>
-        <input type="number" id="latitude" name="latitude" placeholder="e.g: 38.895" required>
-        <label for="location_name">Enter Longitude</label>
-        <input type="number" id="longitude" name="longitude" placeholder="e.g: -77.036" required>
-        <label for="location_name">Enter Description</label>
+        <select id="location_name" name="location_name" class="dropdown" onchange="updateLatLon(this)"
+            style="font-size: 16px; padding: 4px 8px; margin-top: 15px;">
+            <option value="" data-lat="0.0" data-lon="0.0">Select</option>
+            {% for loc in locdtls %}
+            <option value="{{loc.desc}}" data-lat="{{loc.latitude}}" data-lon="{{loc.longitude}}">{{loc.desc}}</option>
+            {% endfor %}
+        </select>
+        <label for="latitude">Enter Latitude</label>
+        <input type="number" id="latitude" name="latitude" step="0.01">
+        <label for="longitude">Enter Longitude</label>
+        <input type="number" id="longitude" name="longitude" step="0.01">
+        <label for="description">Enter Description</label>
         <input type="text" id="description" name="description" placeholder="BBA Department" required>
-        <label for="location_name">Insert An Image</label>
+        <label for="image_path">Insert An Image</label>
         <input type="file" id="image_path" name="image_path" accept="image/*">
         <button type="submit">Add</button>
     </form><br>
 </div><br />
+
+
+<script>
+    function updateLatLon(selectElement) {
+        var selectedOption = selectElement.options[selectElement.selectedIndex];
+        console.log(selectedOption);
+        var lat = selectedOption.getAttribute('data-lat');
+        var lon = selectedOption.getAttribute('data-lon');
+        document.getElementById('latitude').value = lat;
+        document.getElementById('longitude').value = lon;
+    }
+</script>
 {% endblock %}

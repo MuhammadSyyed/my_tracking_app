@@ -26,16 +26,16 @@
 
 {% block main%}
 <button onclick="gotoAddLoc('{{session_id}}')">Add + </button>
-{% for loc in alllocs %}
-<div class="card" style="width:100%;height: max-content;">
+{% endblock %}
 
-    <div class="container">
-        <h4><b>{{loc.location_name}}</b></h4>
-        <p>description:{{loc.description}}</p></br></br>
-        <p> latitude:{{loc.latitude}}</p></br></br>
-        <p> longitude:{{loc.longitude}}</p></br></br>
-        <img style="height: 100px; width: 100px;" src='{{loc.image_path}}'>
-    </div>
+{% block main_cards %}
+{% for loc in alllocs %}
+<div class="card">
+    <h4><b>{{loc.location_name}}</b></h4>
+    <p>description:{{loc.description}}</p>
+    <p> latitude:{{loc.latitude}}</p>
+    <p> longitude:{{loc.longitude}}</p>
+    <img style="height: 200px; width: fit-content;" src='{{loc.image_path}}'>
 </div>
 
 {% endfor %}
