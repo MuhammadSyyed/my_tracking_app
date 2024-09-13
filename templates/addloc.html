@@ -74,13 +74,16 @@ header %} {{page_name|upper}} {% endblock %} {% block main %}
 <br />
 
 <script>
+  function round(value, decimals) {
+    return Number(Math.round(value + "e" + decimals) + "e-" + decimals);
+  }
   function updateLatLon(selectElement) {
     var selectedOption = selectElement.options[selectElement.selectedIndex];
     console.log(selectedOption);
     var lat = selectedOption.getAttribute("data-lat");
     var lon = selectedOption.getAttribute("data-lon");
-    document.getElementById("latitude").value = lat;
-    document.getElementById("longitude").value = lon;
+    document.getElementById("latitude").value = round(lat, 2);
+    document.getElementById("longitude").value = round(lon, 2);
   }
 </script>
 {% endblock %}
