@@ -1,42 +1,44 @@
-{% extends 'base.html' %}
-
-{% block username %}
-<div style="display: flex; align-items: center;">
-    <select id="current_loc" class="dropdown" onchange="sendLocation()"
-        style="font-size: 16px; padding: 4px 8px; margin-top: 15px;">
-        <option value="{{current_location}}" selected>{{current_location}}</option>
-        {% for location in locations %}
-        <option value="{{location}}">{{location}}</option>
-        {% endfor %}
-    </select>
-    <p
-        style="margin-left: 10px; background-color: #ffffff;color: black; font-size: 16px; padding: 4px 8px; border-radius: 5px;">
-        {{username}}</p>
-    <span class="material-icons-outlined" style="font-size: 24px; margin-left: 8px;">account_circle</span>
+{% extends 'base.html' %} {% block username %}
+<div style="display: flex; align-items: center">
+  <select
+    id="current_loc"
+    class="dropdown"
+    onchange="sendLocation()"
+    style="font-size: 16px; padding: 4px 8px; margin-top: 15px"
+  >
+    <option value="{{current_location}}" selected>{{current_location}}</option>
+    {% for location in locations %}
+    <option value="{{location}}">{{location}}</option>
+    {% endfor %}
+  </select>
+  <p
+    style="
+      margin-left: 10px;
+      background-color: #ffffff;
+      color: black;
+      font-size: 16px;
+      padding: 4px 8px;
+      border-radius: 5px;
+    "
+  >
+    {{username}}
+  </p>
+  <span
+    class="material-icons-outlined"
+    style="font-size: 24px; margin-left: 8px"
+    >account_circle</span
+  >
 </div>
-{% endblock %}
-
-{% block title %}
-{{page_name|title}}
-{% endblock %}
-
-{% block header %}
-{{page_name|upper}}
-{% endblock %}
-
-{% block main%}
-<button onclick="gotoAddLoc('{{session_id}}')">Add + </button>
-{% endblock %}
-
-{% block main_cards %}
-{% for loc in alllocs %}
+{% endblock %} {% block title %} {{page_name|title}} {% endblock %} {% block
+header %} {{page_name|upper}} {% endblock %} {% block main%}
+<button onclick="gotoAddLoc('{{session_id}}')">Add +</button>
+{% endblock %} {% block main_cards %} {% for loc in alllocs %}
 <div class="card">
-    <h4><b>{{loc.location_name}}</b></h4>
-    <p>description:{{loc.description}}</p>
-    <p> latitude:{{loc.latitude}}</p>
-    <p> longitude:{{loc.longitude}}</p>
-    <img style="height: 200px; width: fit-content;" src='{{loc.image_path}}'>
+  <h4><b>{{loc.location_name}}</b></h4>
+  <p>Description:{{loc.description}}</p>
+  <p>Latitude:{{loc.latitude}}</p>
+  <p>Longitude:{{loc.longitude}}</p>
+  <img style="height: 250px; width: fit-content" src="{{loc.image_path}}" />
 </div>
 
-{% endfor %}
-{% endblock %}
+{% endfor %} {% endblock %}
