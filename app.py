@@ -1,4 +1,12 @@
-from flask import Flask, render_template, request, jsonify, send_from_directory
+from flask import (
+    Flask,
+    render_template,
+    request,
+    jsonify,
+    send_from_directory,
+    url_for,
+    redirect,
+)
 from flask_cors import CORS
 import json, uuid
 from script import get_locations, generate_map_string
@@ -222,6 +230,16 @@ def set_loc():
         return jsonify(response)
     else:
         return render_template("login.html", message="Unauthorized Access Denied!")
+
+
+@app.route("/delete_loc/<loc_id>", methods=["GET"])
+def delete_loc(loc_id):
+    session_id = request.cookies.get("session_id")
+    valid_id, _, _ = is_valid_session(session_id)
+    if valid_id:
+        res = delete_location(loc_id)
+        if res["success"]:
+            return redirect(url_for("location"))
 
 
 if __name__ == "__main__":

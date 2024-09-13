@@ -1,50 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login Page</title>
-    <link rel="stylesheet" type="text/css" href="../static/css/style.css" />
-  </head>
 
-  <body id="login-body">
-    <center>
-      <div id="login-container">
-        <h1>
-          Welcome To SMIU Nevigation System
-        </h1>
-        <h2>Login</h2>
-        <form action="/login" method="post">
-          <input
-            type="text"
-            id="username"
-            name="username"
-            placeholder="Enter Username"
-            required
-          />
-          <input
-            type="password"
-            id="password"
-            name="password"
-            placeholder="Enter Password"
-            required
-          />
-          <button type="submit" id="login-button">Login</button>
-        </form>
-        <br />
-        <a href="/register">Don't have account?</a>
-      </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login Page</title>
+  <link rel="stylesheet" type="text/css" href="../static/css/style.css" />
+</head>
+
+<body id="login-body" style="background-image: url(../static/images/smiu_bg.jpg);background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100vh;
+  margin: 0;">
+  <center>
+    <div id="login-container">
+      <img src="../static/images/smiulogo.jpg">
+      <h2>
+        Welcome to SMIU Navigation System
+      </h2>
+      <h3>Login</h3>
+      <form action="/login" method="post">
+        <input type="text" id="username" name="username" placeholder="Enter Username" required />
+        <input type="password" id="password" name="password" placeholder="Enter Password" required />
+        <button type="submit" id="login-button">Login</button>
+      </form>
       <br />
-      <div
-        style="
+      <a href="/register">Don't have account?</a>
+    </div>
+    <br />
+    <div style="
           color: red;
           background-color: bisque;
           padding: 10px;
           border-radius: 2px;
-        "
-      >
-        {{message}}
-      </div>
-    </center>
-  </body>
+        ">
+      {{message}}
+    </div>
+  </center>
+</body>
+
 </html>

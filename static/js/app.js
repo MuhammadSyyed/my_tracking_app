@@ -86,6 +86,11 @@ function gotoLocation(session_id) {
     window.location.href = '/location';
 }
 
+function deleteLocation(loc_id,session_id){
+    document.cookie = `session_id=${session_id}`;
+    window.location.href = `/delete_loc/${loc_id}`;
+}
+
 function gotoSearch(session_id) {
     document.cookie = `session_id=${session_id}`;
     window.location.href = '/search';

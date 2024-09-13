@@ -1,39 +1,33 @@
 {% extends 'base.html' %} {% block username %}
 <div style="display: flex; align-items: center">
-  <select
-    id="current_loc"
-    class="dropdown"
-    onchange="sendLocation()"
-    style="font-size: 16px; padding: 4px 8px; margin-top: 15px"
-  >
+  <select id="current_loc" class="dropdown" onchange="sendLocation()"
+    style="font-size: 16px; padding: 4px 8px; margin-top: 15px">
     <option value="{{current_location}}" selected>{{current_location}}</option>
     {% for location in locations %}
     <option value="{{location}}">{{location}}</option>
     {% endfor %}
   </select>
-  <p
-    style="
+  <p style="
       margin-left: 10px;
       background-color: #ffffff;
       color: black;
       font-size: 16px;
       padding: 4px 8px;
       border-radius: 5px;
-    "
-  >
+    ">
     {{username}}
   </p>
-  <span
-    class="material-icons-outlined"
-    style="font-size: 24px; margin-left: 8px"
-    >account_circle</span
-  >
+  <span class="material-icons-outlined" style="font-size: 24px; margin-left: 8px">account_circle</span>
 </div>
 {% endblock %} {% block title %} {{page_name|title}} {% endblock %} {% block
 header %} {{page_name|upper}} {% endblock %} {% block main%}
 <button onclick="gotoAddLoc('{{session_id}}')">Add +</button>
 {% endblock %} {% block main_cards %} {% for loc in alllocs %}
 <div class="card">
+  <div class="action-panel">
+    <span onclick="deleteLocation('{{loc.location_id}}','{{session_id}}')" class="delete-icon-item"></span>
+  </div>
+
   <h4><b>{{loc.location_name}}</b></h4>
   <p>Description:{{loc.description}}</p>
   <p>Latitude:{{loc.latitude}}</p>

@@ -58,7 +58,7 @@
 {% else %}
 <div class="card">
     <p><b>{{user.username}}</b></p>
-    <p>{{user.current_location}}</p>
+    <p>Currently at: {{user.current_location}}</p>
     <button onclick="goto_location('{{current_location}}','{{user.current_location}}')"> View
         location on Map </button>
 </div>
